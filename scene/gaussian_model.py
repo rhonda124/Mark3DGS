@@ -55,7 +55,7 @@ class GaussianModel:
 
     def __init__(self, model):
         self.watermarked_points = []
-        self.watermark_value = "91225917"
+        self.watermark_value = "11225917"
         # self.watermark_value = "1238912912259179123891239872918012389129110291791220932398729191"
         # self.watermark_value = "91291225917912389129122591791238"
         self.active_sh_degree = 0
@@ -731,8 +731,8 @@ class GaussianModel:
         
         print(f"points_to_delete_length: {len(points_to_delete)}")
 
-        if points_to_delete.shape[0] > 1000:
-            _, top_indices = torch.topk(mask_values, 1000, largest=False)
+        if points_to_delete.shape[0] > 50:
+            _, top_indices = torch.topk(mask_values, 50, largest=False)
             watermark_indices = points_to_delete[top_indices]
         else:
             watermark_indices = points_to_delete
