@@ -1,5 +1,6 @@
 /logs
 /output
 /results
-/data
+/data/bicycle
+/data/db
 __pycache__
