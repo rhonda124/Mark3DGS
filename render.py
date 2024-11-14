@@ -20,6 +20,7 @@ from utils.general_utils import safe_state
 from argparse import ArgumentParser
 from arguments import ModelParams, PipelineParams, get_combined_args
 from gaussian_renderer import GaussianModel
+import time
 
 def render_set(model_path, name, iteration, views, gaussians, pipeline, background):
     render_path = os.path.join(model_path, name, "ours_{}".format(iteration), "renders")
@@ -28,11 +29,32 @@ def render_set(model_path, name, iteration, views, gaussians, pipeline, backgrou
     makedirs(render_path, exist_ok=True)
     makedirs(gts_path, exist_ok=True)
 
+    # Add CUDA events for timing
+    # start_time = torch.cuda.Event(enable_timing=True)
+    # end_time = torch.cuda.Event(enable_timing=True)
+    
+    # Warm up run
+    _ = render(views[0], gaussians, pipeline, background)
+    
+    # torch.cuda.synchronize()
+    # start_time.record()
+    
+    elapsed_time = 0.0
+
+    # Render all views
     for idx, view in enumerate(tqdm(views, desc="Rendering progress")):
+        start_time = time.time()
         rendering = render(view, gaussians, pipeline, background)["render"]
+        end_time = time.time()
+        elapsed_time += end_time - start_time
         gt = view.original_image[0:3, :, :]
         torchvision.utils.save_image(rendering, os.path.join(render_path, '{0:05d}'.format(idx) + ".png"))
         torchvision.utils.save_image(gt, os.path.join(gts_path, '{0:05d}'.format(idx) + ".png"))
+    
+
+    # Calculate FPS
+    fps = len(views) / elapsed_time
+    print(f"\n{name} set FPS: {fps:.2f} ({len(views)} frames in {elapsed_time:.2f}s)")
 
 def render_sets(dataset : ModelParams, iteration : int, pipeline : PipelineParams, skip_train : bool, skip_test : bool):
     with torch.no_grad():

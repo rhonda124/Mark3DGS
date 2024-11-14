@@ -1,0 +1,2 @@
+*.mp4 filter=lfs diff=lfs merge=lfs -text
+data/processed_d64_with_loop/**/* filter=lfs diff=lfs merge=lfs -text
