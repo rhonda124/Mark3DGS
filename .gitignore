@@ -1,6 +1,8 @@
 /logs
 /output
 /results
-/data/bicycle
-/data/db
+# /data/bicycle
+# /data/db
 __pycache__
+/output_video_init
+/data

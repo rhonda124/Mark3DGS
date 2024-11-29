@@ -39,8 +39,10 @@ def images_to_video(image_folder, output_path, fps=30):
     video_writer.release()
     print(f"Video saved to {output_path}")
 
-image_folder = "./output/b4d9dece-6/video/ours_30000" 
-output_path = "output_video/truck_1.mp4"
+# image_folder = "./output/4babced7-9/video/ours_30000" 
+# output_path = "output_video/lego.mp4"
+image_folder = "/home/hui_su/c3dgs_init/Compact-3DGS/output/0867d94e-f/video/ours_30000" 
+output_path = "output_video/lego_without_watermark.mp4"
 images_to_video(image_folder, output_path, fps=20)
 
 
